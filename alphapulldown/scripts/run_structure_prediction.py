@@ -56,6 +56,8 @@ flags.DEFINE_boolean('save_features_for_multimeric_object', False,
                      'Whether to save features for multimeric object.')
 flags.DEFINE_boolean('skip_templates', False,
                      'Do not use template features when modelling')
+flags.DEFINE_boolean('dropout', False,
+                     'Enable dropout during inference to generate more diverse models')
 flags.DEFINE_boolean('msa_depth_scan', False,
                      'Run predictions for each model with logarithmically distributed MSA depth.')
 flags.DEFINE_boolean('multimeric_template', False,
@@ -347,6 +349,7 @@ def main(argv):
         "desired_num_res": FLAGS.desired_num_res,
         "desired_num_msa": FLAGS.desired_num_msa,
         "skip_templates": FLAGS.skip_templates,
+        "dropout": FLAGS.dropout,
         "allow_resume": FLAGS.allow_resume,
         "num_diffusion_samples": FLAGS.num_diffusion_samples,
         "flash_attention_implementation": FLAGS.flash_attention_implementation,

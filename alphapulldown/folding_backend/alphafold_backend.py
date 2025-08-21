@@ -131,6 +131,7 @@ class AlphaFoldBackend(FoldingBackend):
         msa_depth_scan=False,
         model_names_custom: List[str] = None,
         msa_depth=None,
+        dropout=False,
         **kwargs,
     ) -> Dict:
         """
@@ -152,6 +153,8 @@ class AlphaFoldBackend(FoldingBackend):
             A list of strings that specify which models to run, default is None, meaning all 5 models will be used
         msa_depth : int or None, optional
             A specific MSA depth to use, default is None.
+        dropout : bool, optional
+            If set to True, enables dropout during evaluation for more diverse predictions, default is False.
         allow_resume : bool, optional
             If set to True, resumes prediction from partially completed runs, default is True.
         **kwargs : dict
@@ -200,6 +203,10 @@ class AlphaFoldBackend(FoldingBackend):
             model_config = config.model_config(model_name)
             model_config.model.num_ensemble_eval = num_ensemble
             model_config["model"].update({"num_recycle": num_cycle})
+            
+            # Enable dropout for more diverse predictions if requested
+            if dropout:
+                model_config.model.global_config.eval_dropout = True
 
             model_params = data.get_model_haiku_params(
                 model_name=model_name, data_dir=model_dir
